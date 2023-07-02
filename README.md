@@ -1,10 +1,12 @@
-# mqtt_push 主要获取tick数据，后将数据推送到emqtt服务节点。
-在 rt_tick 包里面计算了3分钟涨速 和 1分钟量等数据。
+### mqtt_push 主要获取tick数据，后将数据推送到emqtt服务节点。
+#### 在 rt_tick 包里面计算了3分钟涨速 和 1分钟量等数据。
 
 
 
-接收数据示例代码：
+#### 接收数据示例代码：
 call_back.go（接收mqtt消息后，分发到需要使用数据的模块）：
+
+```
 var ChanList = make([]chan StockMod, 0)
 func RegisterChan(c chan StockMod) {
 	ChanList = append(ChanList, c)
@@ -29,8 +31,10 @@ func Allocate(topic string, payload []byte) {
 		ChanList[c] <- sObj
 	}
 }
+```
 
-业务代码：
+#### 业务代码：
+```
 var Chan = make(chan mqtt_cli.StockMod, 100)
 func Init() {
   //注册一个 chan 给mqtt管理器。
@@ -44,3 +48,4 @@ func loop() {
       //业务逻辑代码段。。。
   }
 }
+```
